@@ -43,6 +43,8 @@ build_script:
     
     del ".gitignore"
     
+    del ".git"
+    
     7z a %APPVEYOR_BUILD_FOLDER%\AFT-Shader-Patcher-AppVeyor.zip *
 
 artifacts:
