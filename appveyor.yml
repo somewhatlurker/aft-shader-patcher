@@ -1,0 +1,49 @@
+version: '{build}'
+image: Visual Studio 2019
+branches:
+  only:
+    - master
+build_script:
+- cmd: >-
+    C:\Python38\python.exe -m pip install -r requirements.txt
+    
+    C:\Python38\python.exe -m pip install cx_freeze
+    
+    ren "AFT Shader Patcher" "AFT Shader Patcher Source"
+    
+    C:\Python38\Scripts\cxfreeze.exe "AFT Shader Patcher Source\aft_shader_patcher.py" --target-dir "AFT Shader Patcher"
+    
+    mkdir "AFT Shader Patcher\ARB Patcher"
+    
+    mkdir "AFT Shader Patcher\ARB Patcher\gamesettings"
+    
+    copy "AFT Shader Patcher Source\xdelta3.exe" "AFT Shader Patcher\"
+    
+    copy "AFT Shader Patcher Source\ARB Patcher\*.*" "AFT Shader Patcher\ARB Patcher\"
+    
+    copy "AFT Shader Patcher Source\ARB Patcher\gamesettings\*.*" "AFT Shader Patcher\ARB Patcher\gamesettings\"
+    
+    del /Q "AFT Shader Patcher Source\ARB Patcher\gamesettings"
+    
+    rmdir "AFT Shader Patcher Source\ARB Patcher\gamesettings"
+    
+    del /Q "AFT Shader Patcher Source\ARB Patcher"
+    
+    rmdir "AFT Shader Patcher Source\ARB Patcher"
+    
+    del /Q "AFT Shader Patcher Source"
+    
+    rmdir "AFT Shader Patcher Source"
+    
+    del "patch shaders py.bat"
+    
+    del "requirements.txt"
+    
+    del "appveyor.yml"
+    
+    del ".gitignore"
+    
+    7z a %APPVEYOR_BUILD_FOLDER%\AFT-Shader-Patcher-AppVeyor.zip *
+
+artifacts:
+- path: AFT-Shader-Patcher-*.zip
