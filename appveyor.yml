@@ -23,17 +23,7 @@ build_script:
     
     copy "AFT Shader Patcher Source\ARB Patcher\gamesettings\*.*" "AFT Shader Patcher\ARB Patcher\gamesettings\"
     
-    del /Q "AFT Shader Patcher Source\ARB Patcher\gamesettings"
-    
-    rmdir "AFT Shader Patcher Source\ARB Patcher\gamesettings"
-    
-    del /Q "AFT Shader Patcher Source\ARB Patcher"
-    
-    rmdir "AFT Shader Patcher Source\ARB Patcher"
-    
-    del /Q "AFT Shader Patcher Source"
-    
-    rmdir "AFT Shader Patcher Source"
+    rmdir /s /q "AFT Shader Patcher Source"
     
     del "patch shaders py.bat"
     
@@ -43,7 +33,7 @@ build_script:
     
     del ".gitignore"
     
-    del ".git"
+    rmdir /s /q ".git"
     
     7z a %APPVEYOR_BUILD_FOLDER%\AFT-Shader-Patcher-AppVeyor.zip *
 
