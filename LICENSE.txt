@@ -259,6 +259,11 @@ Python 3.8, licensed under PSF License 2.0:
   Agreement.
 
 
+Some Python components have additional license terms:
+  
+  https://docs.python.org/3/license.html
+
+
 Windows exe releases of AFT Shader Patcher are built using cx_Freeze, licensed
 under cx_Freeze license:
   
