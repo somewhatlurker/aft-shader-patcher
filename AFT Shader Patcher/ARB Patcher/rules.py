@@ -3,12 +3,12 @@ from re import compile as recompile
 
 # inline these because...  idk
 # ATTRIB and OUTPUT must be inlined for vp tho
-ATTRIB_REGEX = recompile(r"(?<!#)(?<!#\s)((SHORT\s*?|LONG\s*?)?ATTRIB\s*?([^\[\]\s]*?)\s*?=\s*?([^\s].*?);)\s*")
-OUTPUT_REGEX = recompile(r"(?<!#)(?<!#\s)((SHORT\s*?|LONG\s*?)?OUTPUT\s*?([^\[\]\s]*?)\s*?=\s*?([^\s].*?);)\s*")
-PARAM_REGEX = recompile(r"(?<!#)(?<!#\s)((SHORT\s*?|LONG\s*?)?PARAM\s*?([^\[\]\s]*?)\s*?=\s*?([^\s].*?);)\s*")
+ATTRIB_REGEX = recompile(r"(?<!#)(?<!#\s)((SHORT\s*?|LONG\s*?)?ATTRIB\s*?([^\[\]\s]*?)\s*?=\s*?([^\s][^;\n]*?);)\s*")
+OUTPUT_REGEX = recompile(r"(?<!#)(?<!#\s)((SHORT\s*?|LONG\s*?)?OUTPUT\s*?([^\[\]\s]*?)\s*?=\s*?([^\s][^;\n]*?);)\s*")
+PARAM_REGEX = recompile(r"(?<!#)(?<!#\s)((SHORT\s*?|LONG\s*?)?PARAM\s*?([^\[\]\s]*?)\s*?=\s*?([^\s][^;\n]*?);)\s*")
 
 # help reduce param count more by commenting out unused ones that weren't inlined (array params can't be inlined)
-UNUSED_PARAM_REGEX = recompile(r"(?<!#)(?<!#\s)((SHORT\s*?|LONG\s*?)?PARAM\s*?([^\[\]\s]*?)(\s*?\[.*?\])?\s*?=\s*?([^\s].*?);)\s*(?![\s\S]*[\s\-\+{]\3[\s,;\.\-\+\[])")
+UNUSED_PARAM_REGEX = recompile(r"(?<!#)(?<!#\s)((SHORT\s*?|LONG\s*?)?PARAM\s*?([^\[\]\s]*?)(\s*?\[.*?\])?\s*?=\s*?([^\s][^;\n]*?);)\s*(?![\s\S]*[\s\-\+{]\3[\s,;\.\-\+\[])")
 
 # I think some of these instructions might still be left after other patches..  they will be commented out
 BAD_INSTR_REGEX = recompile(r"((?<!#)(?<!#\s)(CVT|BUFFER4|POW|NRM|REP)\s+?.*?;|ENDREP;|[^;\n]*\s*?(p_coef2d\[idx.x\]).*?;)\s*")
