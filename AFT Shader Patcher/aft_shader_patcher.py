@@ -1,5 +1,5 @@
 import sys
-from os import chdir, makedirs, get_terminal_size
+from os import chdir, listdir, makedirs, get_terminal_size
 from os.path import join as joinpath, splitext, isfile, exists, dirname, abspath
 from pydiva import pyfarc
 import importlib, importlib.util
@@ -16,19 +16,19 @@ sys.path = [arbpatcher_dir] + sys.path
 import main as ArbPatcher
 sys.path = sys.path[1:]
 
-game_settings_spec = importlib.util.spec_from_file_location('divaaft', joinpath(arbpatcher_gamesettings_dir, 'divaaft.py'))
-game_settings_module = importlib.util.module_from_spec(game_settings_spec)
-game_settings_spec.loader.exec_module(game_settings_module)
-
-
 # not bothering to check for main here because it's just a glue script anyway
-def get_args():    
+def get_args():
+    # make a list of game settings modules
+    game_modules_list = [f[:-3] for f in listdir(arbpatcher_gamesettings_dir) if f.startswith('divaaft') and isfile(joinpath(arbpatcher_gamesettings_dir, f)) and splitext(f)[1] == '.py']
+    
     import argparse
     parser = argparse.ArgumentParser(description='AFT Shader Patcher: Patches Nvidia-only ARB shaders from PDAFT to work on AMD. Patching techniques from Nezarn; implementation by somewhatlurker.')
     parser.add_argument('-i', '--in_farc', default='shader.farc', help='input shader farc file (default: "shader.farc")')
     parser.add_argument('-o', '--out_farc', default='shader_patched.farc', help='output shader farc file (default: "shader_patched.farc")')
     parser.add_argument('-c', '--compress', action='store_true', help='force use of farc compression (this mey produce larger vcdiff files)')
     parser.add_argument('-x', '--xdelta', action='store_true', help='generate a vcdiff patch file')
+    parser.add_argument('-s', '--xdelta_suffix', default=None, help='add a suffix to vcdiff file name')
+    parser.add_argument('-g', '--game_settings', default='divaaft', choices=game_modules_list, help='specific patch variant to use')
     
     return parser.parse_args()
 
@@ -40,6 +40,14 @@ print("Patching techniques from Nezarn; implementation by somewhatlurker")
 print("=================================================================")
 print("Input file: '{}'".format(args.in_farc))
 print("Output file: '{}'".format(args.out_farc))
+
+game_settings_spec = importlib.util.spec_from_file_location(args.game_settings, joinpath(arbpatcher_gamesettings_dir, args.game_settings + '.py'))
+game_settings_module = importlib.util.module_from_spec(game_settings_spec)
+game_settings_spec.loader.exec_module(game_settings_module)
+if game_settings_module.GAME_NAME:
+    print("Settings: '{}'".format(game_settings_module.GAME_NAME))
+else:
+    print("Settings: '{}'".format(args.game_settings))
 
 if not exists(args.in_farc):
     print ("'{}' does not exist. Aborting".format(args.in_farc))
@@ -117,5 +125,10 @@ if args.xdelta:
     #args.in_farc = abspath(args.in_farc)
     #args.out_farc = abspath(args.out_farc)
     
-    subprocess.run([joinpath(datadir, 'xdelta3.exe'), '-e', '-f', '-S', 'none', '-s', args.in_farc, args.out_farc, joinpath(dirname(args.out_farc), in_farc_crc_str + '.vcdiff')], )
-    print ("Generated '{}.vcdiff'".format(in_farc_crc_str))
+    xdfname = in_farc_crc_str
+    if args.xdelta_suffix:
+        xdfname += args.xdelta_suffix
+    xdfname += '.vcdiff'
+    
+    subprocess.run([joinpath(datadir, 'xdelta3.exe'), '-e', '-f', '-S', 'none', '-s', args.in_farc, args.out_farc, joinpath(dirname(args.out_farc), xdfname)], )
+    print ("Generated '{}'".format(xdfname))

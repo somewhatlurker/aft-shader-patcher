@@ -1,5 +1,5 @@
-# gane-specific settings for diva arcade future tone
-GAME_NAME = "Project DIVA Arcade: Future Tone"
+# gane-specific settings for diva arcade future tone (skinning bypassed)
+GAME_NAME = "Project DIVA Arcade: Future Tone (No Skinning)"
 
 from re import compile as recompile
 

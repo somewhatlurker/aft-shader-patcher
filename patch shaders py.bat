@@ -1,1 +1,2 @@
-"AFT Shader Patcher\aft_shader_patcher.py" -i shader.farc -o shader_patched.farc --xdelta
+"AFT Shader Patcher\aft_shader_patcher.py" -i shader.farc -o shader_patched.farc --xdelta --game_settings "divaaft"
+"AFT Shader Patcher\aft_shader_patcher.py" -i shader.farc -o shader_patched_neo.farc --xdelta --xdelta_suffix "_neo" --game_settings "divaaft_neo"
