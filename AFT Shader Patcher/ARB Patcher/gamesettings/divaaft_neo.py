@@ -21,7 +21,7 @@ VP_SKINNING_REGEX_3 = recompile(r"(BUFFER4[\s\S]*?)(DP4 ([^;]*?), _mtxpal\[([^\]
 VP_SKINNING_REGEX_3b = recompile(r"(BUFFER4[\s\S]*?)(DP4 ([^;]*?), _mtxpal\[([^\]]*?\.y) \])")
 VP_SKINNING_REGEX_3c = recompile(r"(BUFFER4[\s\S]*?)(DP4 ([^;]*?), _mtxpal\[([^\]]*?\.z) \])")
 VP_SKINNING_REGEX_3d = recompile(r"(BUFFER4[\s\S]*?)(DP4 ([^;]*?), _mtxpal\[([^\]]*?\.w) \])")
-VP_SKINNING_SUB_3 = "\\1TEX mtx_tmp, \\4, texture[8], 1D; ADD \\4, \\4, {skinning_pixel_size_local}; TEX mtx_tmp1, \\4, texture[8], 1D; ADD \\4, \\4, {skinning_pixel_size_local}; TEX mtx_tmp2, \\4, texture[8], 1D; DP4 \\3, _mtxpal[\\4+ ]"
+VP_SKINNING_SUB_3 = f"\\1TEX mtx_tmp, \\4, texture[8], 1D; ADD \\4, \\4, {skinning_pixel_size_local}; TEX mtx_tmp1, \\4, texture[8], 1D; ADD \\4, \\4, {skinning_pixel_size_local}; TEX mtx_tmp2, \\4, texture[8], 1D; DP4 \\3, _mtxpal[\\4+ ]"
 
 VP_SKINNING_REGEX_4 = recompile(r"(BUFFER4[\s\S]*?)_mtxpal\[([^\]]*?\.\S)\+?(\s|\d)\]")
 VP_SKINNING_SUB_4 = "\\1mtx_tmp\\3"
@@ -33,16 +33,16 @@ VP_SKINNING_SUB_4 = "\\1mtx_tmp\\3"
 #TIGHTS_SKINNING_EFFECT_REGEX = recompile(r"(BUFFER4[\s\S]*?)SUBC .*?, vertex.attrib\[15\], .*?;\s*?SUBC1 tmp, vertex.attrib\[15\], .*?;[\s\S]*?XPD .*?, .*?, .*?;\s*?DP3_SAT (.*?), .*?, .*?;")
 #TIGHTS_SKINNING_EFFECT_SUB = "\\1MOV \\2, 0;"
 TIGHTS_SKINNING_EFFECT_REGEX = recompile(r"(BUFFER4[\s\S]*?)CVT(?:.S32.F32)?\s*?(.*?),\s*?(.*?);")
-TIGHTS_SKINNING_EFFECT_SUB = "\\1MUL \\2, \\3, {skinning_pixel_size_local};"
+TIGHTS_SKINNING_EFFECT_SUB = f"\\1MUL \\2, \\3, {skinning_pixel_size_local};"
 #TIGHTS_SKINNING_EFFECT_REGEX_2 = recompile(r"(BUFFER4[\s\S]*?)(IF GT1.y;[\s\S]*?|)(DP3 ([^;]*?), _mtxpal\[([^\]]*?\.x) \])(?![\s\S]*MUL  _adr)")
 #TIGHTS_SKINNING_EFFECT_REGEX_2b = recompile(r"(BUFFER4[\s\S]*?)(IF GT1.y;[\s\S]*?|)(DP3 ([^;]*?), _mtxpal\[([^\]]*?\.y) \])(?![\s\S]*MUL  _adr)")
-#TIGHTS_SKINNING_EFFECT_SUB_2 = "\\1TEX mtx_tmp, \\5, texture[8], 1D; ADD \\5, \\5, {skinning_pixel_size_local}; TEX mtx_tmp1, \\5, texture[8], 1D; ADD \\5, \\5, {skinning_pixel_size_local}; TEX mtx_tmp2, \\5, texture[8], 1D; \\2 DP3 \\4, _mtxpal[\\5+ ]"
+#TIGHTS_SKINNING_EFFECT_SUB_2 = f"\\1TEX mtx_tmp, \\5, texture[8], 1D; ADD \\5, \\5, {skinning_pixel_size_local}; TEX mtx_tmp1, \\5, texture[8], 1D; ADD \\5, \\5, {skinning_pixel_size_local}; TEX mtx_tmp2, \\5, texture[8], 1D; \\2 DP3 \\4, _mtxpal[\\5+ ]"
 TIGHTS_SKINNING_EFFECT_REGEX_2 = recompile(r"(BUFFER4[\s\S]*?)(DP3 ([^;]*?), _mtxpal\[([^\]]*?\.x) \])(?![\s\S]*MUL  _adr)")
-TIGHTS_SKINNING_EFFECT_SUB_2 = "\\1TEX mtx_tmp, \\4, texture[8], 1D; ADD \\4, \\4, {skinning_pixel_size_local}; TEX mtx_tmp1, \\4, texture[8], 1D; ADD \\4, \\4, {skinning_pixel_size_local}; TEX mtx_tmp2, \\4, texture[8], 1D; DP3 \\3, _mtxpal[\\4+ ]"
+TIGHTS_SKINNING_EFFECT_SUB_2 = f"\\1TEX mtx_tmp, \\4, texture[8], 1D; ADD \\4, \\4, {skinning_pixel_size_local}; TEX mtx_tmp1, \\4, texture[8], 1D; ADD \\4, \\4, {skinning_pixel_size_local}; TEX mtx_tmp2, \\4, texture[8], 1D; DP3 \\3, _mtxpal[\\4+ ]"
 TIGHTS_SKINNING_EFFECT_REGEX_3 = recompile(r"(BUFFER4[\s\S]*?)(DP3 ([^;]*?), _mtxpal\[([^\]]*?\.y) \])(?![\s\S]*MUL  _adr)")
 TIGHTS_SKINNING_EFFECT_SUB_3 = "\\1TEX mtx_tmp, \\4, texture[8], 1D; DP3 \\3, _mtxpal[\\4+ ]"
 TIGHTS_SKINNING_EFFECT_REGEX_4 = recompile(r"(BUFFER4[\s\S]*?)(DP3 ([^;]*?), _mtxpal\[([^\]]*?\.y)\+1\])(?![\s\S]*MUL  _adr)")
-TIGHTS_SKINNING_EFFECT_SUB_4 = "\\1ADD \\4, \\4, {skinning_pixel_size_local}; TEX mtx_tmp1, \\4, texture[8], 1D; ADD \\4, \\4, {skinning_pixel_size_local}; TEX mtx_tmp2, \\4, texture[8], 1D; DP3 \\3, _mtxpal[\\4+1]"
+TIGHTS_SKINNING_EFFECT_SUB_4 = f"\\1ADD \\4, \\4, {skinning_pixel_size_local}; TEX mtx_tmp1, \\4, texture[8], 1D; ADD \\4, \\4, {skinning_pixel_size_local}; TEX mtx_tmp2, \\4, texture[8], 1D; DP3 \\3, _mtxpal[\\4+1]"
 
 
 
